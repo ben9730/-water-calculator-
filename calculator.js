@@ -14,8 +14,8 @@ const TARIFFS = {
         year: 2026
     },
     2025: {
-        reduced: 7.874,  // NIS per cubic meter (without VAT, but we'll use with VAT for comparison)
-        full: 14.057,    // NIS per cubic meter (without VAT)
+        reduced: 8.314,  // NIS per cubic meter (includes VAT - 7.046 base + 18% VAT)
+        full: 15.260,    // NIS per cubic meter (includes VAT - 12.932 base + 18% VAT)
         year: 2025
     }
 };
