@@ -1,0 +1,794 @@
+/* ========================================
+   Water Calculator CSS - Israel 2026
+   Modern Minimalist Design with Water Theme
+   ======================================== */
+
+/* === CSS Variables === */
+:root {
+    /* Colors - Water Theme */
+    --primary-blue: #0077BE;
+    --light-blue: #00A8E8;
+    --water-tint: #E3F4FF;
+    --dark-blue: #005A8C;
+    --white: #FFFFFF;
+    --text-dark: #2C3E50;
+    --text-light: #6C757D;
+    --border-gray: #E0E0E0;
+    --success-green: #28A745;
+    --warning-orange: #FFA500;
+    --danger-red: #DC3545;
+    --shadow: rgba(0, 119, 190, 0.1);
+    --shadow-hover: rgba(0, 119, 190, 0.2);
+
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+
+    /* Border Radius */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+
+    /* Transitions */
+    --transition: all 0.3s ease;
+}
+
+/* === Reset & Base === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Heebo', Arial, sans-serif;
+    background: linear-gradient(135deg, #E3F4FF 0%, #FFFFFF 100%);
+    color: var(--text-dark);
+    line-height: 1.6;
+    min-height: 100vh;
+    direction: rtl;
+    text-align: right;
+}
+
+/* === Container === */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-lg) var(--spacing-md);
+}
+
+/* === Header === */
+.header {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+    animation: fadeInDown 0.6s ease;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+}
+
+.logo i {
+    font-size: 3rem;
+    color: var(--primary-blue);
+    animation: droplet 2s ease-in-out infinite;
+}
+
+@keyframes droplet {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    margin: 0;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    font-weight: 400;
+}
+
+/* === Info Alert === */
+.info-alert {
+    background: linear-gradient(135deg, var(--light-blue), var(--primary-blue));
+    color: var(--white);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+    box-shadow: 0 4px 15px var(--shadow);
+    animation: fadeIn 0.6s ease 0.2s both;
+}
+
+.info-alert i {
+    margin-left: var(--spacing-xs);
+}
+
+/* === Instructions Toggle Button === */
+.instructions-toggle {
+    width: 100%;
+    background: var(--white);
+    border: 2px solid var(--primary-blue);
+    color: var(--primary-blue);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+}
+
+.instructions-toggle:hover {
+    background: var(--primary-blue);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px var(--shadow-hover);
+}
+
+.instructions-toggle i {
+    font-size: 1.3rem;
+}
+
+/* === Instructions Box === */
+.instructions-box {
+    background: var(--white);
+    border: 2px solid var(--water-tint);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: 0 4px 20px var(--shadow);
+    animation: slideDown 0.4s ease;
+}
+
+.instructions-box.hidden {
+    display: none;
+}
+
+.instructions-box h3 {
+    color: var(--primary-blue);
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.instructions-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.instruction-item {
+    padding: var(--spacing-md);
+    background: var(--water-tint);
+    border-radius: var(--radius-sm);
+    border-right: 4px solid var(--light-blue);
+}
+
+.instruction-item strong {
+    display: block;
+    color: var(--primary-blue);
+    margin-bottom: var(--spacing-xs);
+    font-size: 1.05rem;
+}
+
+.instruction-item p {
+    color: var(--text-dark);
+    font-size: 0.95rem;
+}
+
+.instruction-item.alert {
+    background: #FFF3CD;
+    border-right-color: var(--warning-orange);
+}
+
+.instruction-item.alert strong {
+    color: var(--warning-orange);
+}
+
+/* === Calculator Card === */
+.calculator-card {
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
+    box-shadow: 0 8px 30px var(--shadow);
+    margin-bottom: var(--spacing-lg);
+    animation: fadeIn 0.6s ease 0.4s both;
+}
+
+.calculator-card h2 {
+    color: var(--primary-blue);
+    font-size: 1.8rem;
+    margin-bottom: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+/* === Form Styles === */
+.form-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-xs);
+    font-size: 1.05rem;
+}
+
+.form-group label i {
+    color: var(--light-blue);
+    margin-left: var(--spacing-xs);
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: var(--spacing-md);
+    border: 2px solid var(--border-gray);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    font-family: 'Heebo', Arial, sans-serif;
+    transition: var(--transition);
+    background: var(--white);
+    color: var(--text-dark);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(0, 119, 190, 0.1);
+}
+
+.form-group small {
+    display: block;
+    margin-top: var(--spacing-xs);
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
+
+/* === Checkbox Group === */
+.checkbox-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    cursor: pointer;
+    padding: var(--spacing-md);
+    background: var(--water-tint);
+    border-radius: var(--radius-md);
+    transition: var(--transition);
+}
+
+.checkbox-label:hover {
+    background: #D0EBFF;
+}
+
+.checkbox-label input[type="checkbox"] {
+    display: none;
+}
+
+.checkbox-custom {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--primary-blue);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkbox-custom {
+    background: var(--primary-blue);
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkbox-custom::after {
+    content: "✓";
+    color: var(--white);
+    font-weight: bold;
+}
+
+.checkbox-text {
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+/* === Calculate Button === */
+.calculate-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--light-blue), var(--primary-blue));
+    color: var(--white);
+    border: none;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    box-shadow: 0 4px 15px var(--shadow-hover);
+}
+
+.calculate-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 25px var(--shadow-hover);
+}
+
+.calculate-btn:active {
+    transform: translateY(-1px);
+}
+
+/* === Results Section === */
+.results-section {
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
+    box-shadow: 0 8px 30px var(--shadow);
+    margin-bottom: var(--spacing-lg);
+    animation: fadeInUp 0.6s ease;
+}
+
+.results-section.hidden {
+    display: none;
+}
+
+.results-section h2 {
+    color: var(--primary-blue);
+    font-size: 1.8rem;
+    margin-bottom: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+/* === Results Grid === */
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.result-card {
+    background: linear-gradient(135deg, var(--water-tint), var(--white));
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    border: 2px solid var(--border-gray);
+    transition: var(--transition);
+}
+
+.result-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px var(--shadow-hover);
+}
+
+.result-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--spacing-md);
+    font-size: 1.8rem;
+}
+
+.result-icon.reduced {
+    background: linear-gradient(135deg, #28A745, #20C997);
+    color: var(--white);
+}
+
+.result-icon.full {
+    background: linear-gradient(135deg, #FFA500, #FF6347);
+    color: var(--white);
+}
+
+.result-icon.total {
+    background: linear-gradient(135deg, var(--light-blue), var(--primary-blue));
+    color: var(--white);
+}
+
+.result-card h3 {
+    text-align: center;
+    color: var(--text-dark);
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-md);
+    font-weight: 600;
+}
+
+.result-value {
+    text-align: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+.cubic-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+}
+
+.unit {
+    font-size: 1.2rem;
+    color: var(--text-light);
+    margin-right: var(--spacing-xs);
+}
+
+.result-price {
+    text-align: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+.price-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--success-green);
+}
+
+.currency {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    margin-right: var(--spacing-xs);
+}
+
+.result-rate {
+    text-align: center;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.result-rate span {
+    font-weight: 600;
+    color: var(--primary-blue);
+}
+
+/* === Total Card === */
+.total-card {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+    border: none;
+    color: var(--white);
+}
+
+.total-card h3 {
+    color: var(--white);
+}
+
+.result-total {
+    text-align: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.total-value {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: var(--white);
+}
+
+.total-card .currency {
+    color: var(--water-tint);
+    font-size: 1.5rem;
+}
+
+.result-note {
+    text-align: center;
+    color: var(--water-tint);
+    font-size: 0.9rem;
+    margin-top: var(--spacing-sm);
+}
+
+/* === Comparison Section === */
+.comparison-section {
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    background: var(--water-tint);
+    border-radius: var(--radius-lg);
+    animation: fadeIn 0.6s ease;
+}
+
+.comparison-section.hidden {
+    display: none;
+}
+
+.comparison-section h3 {
+    color: var(--primary-blue);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.comparison-card {
+    background: var(--white);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 15px var(--shadow);
+}
+
+.comparison-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--border-gray);
+}
+
+.comparison-item:last-child {
+    border-bottom: none;
+}
+
+.comparison-label {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.comparison-value {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--primary-blue);
+}
+
+.comparison-diff {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md);
+    background: var(--water-tint);
+    border-radius: var(--radius-sm);
+    margin-top: var(--spacing-md);
+}
+
+.comparison-diff .comparison-value {
+    color: var(--warning-orange);
+}
+
+.diff-percent {
+    font-size: 0.95rem;
+    margin-right: var(--spacing-xs);
+}
+
+/* === Chart Container === */
+.chart-container {
+    margin: var(--spacing-lg) 0;
+    padding: var(--spacing-lg);
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 15px var(--shadow);
+}
+
+/* === Action Buttons === */
+.action-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+}
+
+.action-btn {
+    flex: 1;
+    padding: var(--spacing-md);
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+}
+
+.pdf-btn {
+    background: linear-gradient(135deg, #DC3545, #C82333);
+    color: var(--white);
+}
+
+.pdf-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(220, 53, 69, 0.3);
+}
+
+.reset-btn {
+    background: linear-gradient(135deg, var(--text-light), #5A6268);
+    color: var(--white);
+}
+
+.reset-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(108, 117, 125, 0.3);
+}
+
+/* === Footer === */
+.footer {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    margin-top: var(--spacing-xl);
+    box-shadow: 0 4px 15px var(--shadow);
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.footer-section h4 {
+    color: var(--primary-blue);
+    margin-bottom: var(--spacing-md);
+    font-size: 1.2rem;
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section li {
+    padding: var(--spacing-xs) 0;
+    color: var(--text-dark);
+}
+
+.footer-section li i {
+    color: var(--light-blue);
+    margin-left: var(--spacing-xs);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: var(--spacing-lg);
+    border-top: 2px solid var(--border-gray);
+    color: var(--text-light);
+}
+
+/* === Animations === */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        max-height: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        max-height: 2000px;
+        transform: translateY(0);
+    }
+}
+
+/* === Responsive Design === */
+@media (max-width: 768px) {
+    .container {
+        padding: var(--spacing-sm);
+    }
+
+    .header h1 {
+        font-size: 2rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+    }
+
+    .calculator-card,
+    .results-section,
+    .footer {
+        padding: var(--spacing-lg);
+    }
+
+    .results-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+
+    .cubic-value {
+        font-size: 2rem;
+    }
+
+    .total-value {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.5rem;
+    }
+
+    .logo i {
+        font-size: 2rem;
+    }
+
+    .subtitle {
+        font-size: 0.9rem;
+    }
+
+    .calculator-card h2,
+    .results-section h2 {
+        font-size: 1.4rem;
+    }
+}
+
+/* === Print Styles === */
+@media print {
+    body {
+        background: var(--white);
+    }
+
+    .instructions-toggle,
+    .action-buttons,
+    .footer {
+        display: none;
+    }
+
+    .calculator-card,
+    .results-section {
+        box-shadow: none;
+        border: 1px solid var(--border-gray);
+    }
+}

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="מחשבון חיוב מים לישראל 2026 - בדקו את נכונות חשבון המים שלכם">
+    <meta name="keywords" content="מחשבון מים, תעריף מים, חיוב מים, ישראל 2026">
+    <meta property="og:title" content="מחשבון חיוב מים ישראל 2026">
+    <meta property="og:description" content="בדקו את נכונות חשבון המים שלכם לפי התעריפים העדכניים ביותר">
+    <meta property="og:type" content="website">
+    <title>מחשבון חיוב מים ישראל 2026</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-tint"></i>
+                <h1>מחשבון חיוב מים</h1>
+            </div>
+            <p class="subtitle">בדקו את נכונות חשבון המים שלכם לפי התעריפים העדכניים של 2026</p>
+        </header>
+
+        <!-- Info Alert -->
+        <div class="info-alert">
+            <i class="fas fa-info-circle"></i>
+            <span>תעריפים נכונים לשנת 2026 | מופחת: 8.508 ₪/מ"ק | מלא: 15.623 ₪/מ"ק</span>
+        </div>
+
+        <!-- Instructions Toggle -->
+        <button class="instructions-toggle" onclick="toggleInstructions()">
+            <i class="fas fa-question-circle"></i>
+            איך להשתמש במחשבון?
+        </button>
+
+        <!-- Instructions Box (Hidden by default) -->
+        <div id="instructionsBox" class="instructions-box hidden">
+            <h3><i class="fas fa-book"></i> מדריך שימוש במחשבון</h3>
+            <div class="instructions-content">
+                <div class="instruction-item">
+                    <strong>1. מצאו את נתוני הצריכה בחשבון המים:</strong>
+                    <p>חפשו בחשבון המים שלכם את כמות הצריכה במטר קוב (מ"ק). הנתון מופיע בדרך כלל בחלק העליון של החשבון.</p>
+                </div>
+                <div class="instruction-item">
+                    <strong>2. הכניסו את מספר הנפשות בבית:</strong>
+                    <p>כל נפש זכאית ל-3.5 מ"ק בחודש בתעריף מופחת (כ-115 ליטר ליום). אם לא הצהרתם על מספר הנפשות, התאגיד מחשב ברירת מחדל של 2 נפשות.</p>
+                </div>
+                <div class="instruction-item">
+                    <strong>3. בחרו את תקופת החיוב:</strong>
+                    <p>רוב תאגידי המים מחייבים אחת לחודשיים. בדקו בחשבון שלכם את תקופת החיוב.</p>
+                </div>
+                <div class="instruction-item">
+                    <strong>4. נכות:</strong>
+                    <p>אם יש בבית נפש עם אחוז נכות 70% ומעלה המוכרת בביטוח לאומי, סמנו את התיבה. זכאות זו מקנה 3.5 מ"ק נוספים בתעריף מופחת.</p>
+                </div>
+                <div class="instruction-item">
+                    <strong>5. איך להצהיר על מספר נפשות:</strong>
+                    <p>פנו לתאגיד המים המקומי שלכם עם תעודות זהות של כל בני הבית. רוב התאגידים מאפשרים הצהרה באתר או בטלפון.</p>
+                </div>
+                <div class="instruction-item alert">
+                    <strong><i class="fas fa-exclamation-triangle"></i> מתי לבדוק שגיאות:</strong>
+                    <p>בדקו את חשבונכם אם: החיוב עלה בצורה חדה ללא סיבה, מספר הנפשות בחשבון שגוי, הצריכה גבוהה באופן חריג (ייתכן דליפה).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Calculator Card -->
+        <div class="calculator-card">
+            <h2><i class="fas fa-calculator"></i> חישוב חשבון מים</h2>
+
+            <form id="waterForm" onsubmit="calculateWater(event)">
+                <!-- Consumption Input -->
+                <div class="form-group">
+                    <label for="consumption">
+                        <i class="fas fa-water"></i>
+                        צריכת מים (מטר קוב):
+                    </label>
+                    <input
+                        type="number"
+                        id="consumption"
+                        name="consumption"
+                        min="0"
+                        step="0.1"
+                        required
+                        placeholder="לדוגמה: 18.5"
+                    >
+                    <small>הכניסו את כמות המים שצרכתם כפי שמופיע בחשבון</small>
+                </div>
+
+                <!-- Number of Persons -->
+                <div class="form-group">
+                    <label for="persons">
+                        <i class="fas fa-users"></i>
+                        מספר נפשות בבית:
+                    </label>
+                    <select id="persons" name="persons" required>
+                        <option value="1">1 נפש</option>
+                        <option value="2" selected>2 נפשות</option>
+                        <option value="3">3 נפשות</option>
+                        <option value="4">4 נפשות</option>
+                        <option value="5">5 נפשות</option>
+                        <option value="6">6 נפשות</option>
+                        <option value="7">7 נפשות</option>
+                        <option value="8">8 נפשות</option>
+                        <option value="9">9 נפשות</option>
+                        <option value="10">10+ נפשות</option>
+                    </select>
+                    <small>כל נפש זכאית ל-3.5 מ"ק בחודש בתעריף מופחת</small>
+                </div>
+
+                <!-- Billing Period -->
+                <div class="form-group">
+                    <label for="period">
+                        <i class="fas fa-calendar-alt"></i>
+                        תקופת חיוב:
+                    </label>
+                    <select id="period" name="period" required>
+                        <option value="1">חודשי</option>
+                        <option value="2" selected>דו-חודשי (חודשיים)</option>
+                    </select>
+                    <small>רוב החשבונות הם דו-חודשיים</small>
+                </div>
+
+                <!-- Disability Checkbox -->
+                <div class="form-group checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="disability" name="disability">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-text">
+                            <i class="fas fa-wheelchair"></i>
+                            יש בבית נפש עם נכות 70%+ (ביטוח לאומי)
+                        </span>
+                    </label>
+                    <small>זכאות זו מוסיפה 3.5 מ"ק נוספים בתעריף מופחת</small>
+                </div>
+
+                <!-- Year Selection for Historical Comparison -->
+                <div class="form-group">
+                    <label for="year">
+                        <i class="fas fa-history"></i>
+                        השוואה לשנה:
+                    </label>
+                    <select id="year" name="year">
+                        <option value="2026" selected>2026 (נוכחי)</option>
+                        <option value="2025">2025 (השוואה)</option>
+                    </select>
+                    <small>בחרו שנה שונה כדי לראות את ההבדל במחיר</small>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="calculate-btn">
+                    <i class="fas fa-calculator"></i>
+                    חשב חשבון מים
+                </button>
+            </form>
+        </div>
+
+        <!-- Results Section (Hidden initially) -->
+        <div id="resultsSection" class="results-section hidden">
+            <h2><i class="fas fa-file-invoice-dollar"></i> תוצאות החישוב</h2>
+
+            <div class="results-grid">
+                <!-- Allocation Card -->
+                <div class="result-card">
+                    <div class="result-icon reduced">
+                        <i class="fas fa-hand-holding-water"></i>
+                    </div>
+                    <h3>הקצאה בתעריף מופחת</h3>
+                    <div class="result-value">
+                        <span id="allocatedCubic" class="cubic-value">0</span>
+                        <span class="unit">מ"ק</span>
+                    </div>
+                    <div class="result-price">
+                        <span id="reducedPrice" class="price-value">0.00</span>
+                        <span class="currency">₪</span>
+                    </div>
+                    <p class="result-rate">תעריף: <span id="reducedRate">8.508</span> ₪/מ"ק</p>
+                </div>
+
+                <!-- Excess Card -->
+                <div class="result-card">
+                    <div class="result-icon full">
+                        <i class="fas fa-tint-slash"></i>
+                    </div>
+                    <h3>צריכה עודפת בתעריף מלא</h3>
+                    <div class="result-value">
+                        <span id="excessCubic" class="cubic-value">0</span>
+                        <span class="unit">מ"ק</span>
+                    </div>
+                    <div class="result-price">
+                        <span id="fullPrice" class="price-value">0.00</span>
+                        <span class="currency">₪</span>
+                    </div>
+                    <p class="result-rate">תעריף: <span id="fullRate">15.623</span> ₪/מ"ק</p>
+                </div>
+
+                <!-- Total Card (Full Width) -->
+                <div class="result-card total-card">
+                    <div class="result-icon total">
+                        <i class="fas fa-receipt"></i>
+                    </div>
+                    <h3>סכום כולל לתשלום</h3>
+                    <div class="result-total">
+                        <span id="totalPrice" class="total-value">0.00</span>
+                        <span class="currency">₪</span>
+                    </div>
+                    <p class="result-note" id="minChargeNote"></p>
+                </div>
+            </div>
+
+            <!-- Historical Comparison (shown only when comparing) -->
+            <div id="comparisonSection" class="comparison-section hidden">
+                <h3><i class="fas fa-chart-line"></i> השוואה היסטורית</h3>
+                <div class="comparison-card">
+                    <div class="comparison-item">
+                        <span class="comparison-label">2026 (נוכחי):</span>
+                        <span class="comparison-value" id="currentYearPrice">0.00 ₪</span>
+                    </div>
+                    <div class="comparison-item">
+                        <span class="comparison-label">2025:</span>
+                        <span class="comparison-value" id="previousYearPrice">0.00 ₪</span>
+                    </div>
+                    <div class="comparison-diff">
+                        <span class="comparison-label">הפרש:</span>
+                        <span class="comparison-value" id="priceDifference">
+                            <span id="diffAmount">0.00</span> ₪
+                            <span id="diffPercent" class="diff-percent">(0%)</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart Canvas -->
+            <div class="chart-container">
+                <canvas id="waterChart"></canvas>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button onclick="exportToPDF()" class="action-btn pdf-btn">
+                    <i class="fas fa-file-pdf"></i>
+                    ייצא ל-PDF
+                </button>
+                <button onclick="resetCalculator()" class="action-btn reset-btn">
+                    <i class="fas fa-redo"></i>
+                    חישוב חדש
+                </button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>מקורות המידע</h4>
+                    <ul>
+                        <li><i class="fas fa-link"></i> רשות המים</li>
+                        <li><i class="fas fa-link"></i> מקורות - חברת המים הלאומית</li>
+                        <li><i class="fas fa-link"></i> תעריפי מים מעודכנים לשנת 2026</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>הערות חשובות</h4>
+                    <ul>
+                        <li><i class="fas fa-exclamation-circle"></i> התעריפים עשויים להשתנות במהלך השנה</li>
+                        <li><i class="fas fa-exclamation-circle"></i> תאגידים מקומיים עשויים להוסיף עלויות קבועות</li>
+                        <li><i class="fas fa-exclamation-circle"></i> המחשבון מבוסס על תעריפי רשות המים</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 מחשבון חיוב מים ישראל | נוצר לטובת הציבור</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="calculator.js"></script>
+</body>
+</html>
