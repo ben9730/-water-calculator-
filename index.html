@@ -75,6 +75,174 @@
             </div>
         </div>
 
+        <!-- Error Detection Section -->
+        <div class="error-detection-card">
+            <h2><i class="fas fa-search-dollar"></i> בדיקת טעויות בחשבון המים</h2>
+            <p class="section-description">מצאו טעויות נפוצות בחשבון המים שלכם והבינו איך לתקן אותן</p>
+
+            <button class="error-toggle-btn" onclick="toggleErrorChecker()">
+                <i class="fas fa-bug"></i>
+                בדקו את החשבון שלכם לטעויות
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </button>
+
+            <!-- Error Checker Form (Hidden by default) -->
+            <div id="errorCheckerBox" class="error-checker-box hidden">
+                <form id="errorCheckerForm" onsubmit="checkForErrors(event)">
+                    <div class="error-form-grid">
+                        <!-- Actual Bill Amount -->
+                        <div class="form-group">
+                            <label for="actualBillAmount">
+                                <i class="fas fa-file-invoice-dollar"></i>
+                                הסכום בחשבון בפועל (₪):
+                            </label>
+                            <input
+                                type="number"
+                                id="actualBillAmount"
+                                name="actualBillAmount"
+                                min="0"
+                                step="0.01"
+                                placeholder="לדוגמה: 145.50"
+                            >
+                            <small>הסכום שמופיע בחשבון המים שקיבלתם</small>
+                        </div>
+
+                        <!-- Billing Type -->
+                        <div class="form-group">
+                            <label for="billingType">
+                                <i class="fas fa-clipboard-check"></i>
+                                סוג הקריאה:
+                            </label>
+                            <select id="billingType" name="billingType">
+                                <option value="actual">קריאה ממונה</option>
+                                <option value="estimated">הערכה</option>
+                                <option value="unknown">לא יודע/ת</option>
+                            </select>
+                            <small>בדקו בחשבון האם זו קריאה ממונה או הערכה</small>
+                        </div>
+
+                        <!-- Previous Consumption -->
+                        <div class="form-group">
+                            <label for="previousConsumption">
+                                <i class="fas fa-history"></i>
+                                צריכה בחשבון הקודם (מ"ק):
+                            </label>
+                            <input
+                                type="number"
+                                id="previousConsumption"
+                                name="previousConsumption"
+                                min="0"
+                                step="0.1"
+                                placeholder="לדוגמה: 16.2"
+                            >
+                            <small>עזר לזיהוי שינויים חריגים בצריכה</small>
+                        </div>
+
+                        <!-- Current Meter Reading -->
+                        <div class="form-group">
+                            <label for="currentMeterReading">
+                                <i class="fas fa-tachometer-alt"></i>
+                                קריאת מונה נוכחית (אופציונלי):
+                            </label>
+                            <input
+                                type="number"
+                                id="currentMeterReading"
+                                name="currentMeterReading"
+                                min="0"
+                                step="0.1"
+                                placeholder="לדוגמה: 1234.5"
+                            >
+                            <small>צלמו את המונה ורשמו את המספר שרואים</small>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="check-errors-btn">
+                        <i class="fas fa-search"></i>
+                        בדקו טעויות
+                    </button>
+                </form>
+
+                <!-- Error Detection Results -->
+                <div id="errorResults" class="error-results hidden">
+                    <h3><i class="fas fa-exclamation-triangle"></i> תוצאות בדיקת טעויות</h3>
+                    <div id="errorsList" class="errors-list"></div>
+                    <div id="recommendedActions" class="recommended-actions"></div>
+                </div>
+            </div>
+
+            <!-- Common Errors Info -->
+            <div class="common-errors-info">
+                <h3><i class="fas fa-info-circle"></i> טעויות נפוצות בחיוב מים</h3>
+                <div class="error-types-grid">
+                    <div class="error-type-card">
+                        <div class="error-type-icon estimation">
+                            <i class="fas fa-question"></i>
+                        </div>
+                        <h4>חיוב על פי הערכה</h4>
+                        <p>התאגיד מחשב לפי הערכה במקום קריאה ממונה. זה יכול להוביל לחיוב יתר או חסר.</p>
+                        <div class="error-solution">
+                            <strong>פתרון:</strong> צלמו את המונה ושלחו לתאגיד המים לעדכון וזיכוי במידת הצורך.
+                        </div>
+                    </div>
+
+                    <div class="error-type-card">
+                        <div class="error-type-icon persons">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h4>מספר נפשות שגוי</h4>
+                        <p>התאגיד מחשב לפי 2 נפשות כברירת מחדל אם לא הצהרתם על מספר הנפשות.</p>
+                        <div class="error-solution">
+                            <strong>פתרון:</strong> פנו לתאגיד עם תעודות זהות לעדכון מספר הנפשות.
+                        </div>
+                    </div>
+
+                    <div class="error-type-card">
+                        <div class="error-type-icon reading">
+                            <i class="fas fa-eye-slash"></i>
+                        </div>
+                        <h4>טעות בקריאת מונה</h4>
+                        <p>קריאה שגויה של קורא מונים ידני - טעות אנוש בהקלדת הנתונים.</p>
+                        <div class="error-solution">
+                            <strong>פתרון:</strong> צלמו את המונה והשוו לחשבון. פנו לתאגיד לתיקון.
+                        </div>
+                    </div>
+
+                    <div class="error-type-card">
+                        <div class="error-type-icon spike">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h4>עלייה חדה בצריכה</h4>
+                        <p>עלייה פתאומית וחדה בצריכה - עשוי להצביע על דליפה או מונה פגום.</p>
+                        <div class="error-solution">
+                            <strong>פתרון:</strong> בדקו דליפות במערכת. אם אין - בקשו בדיקת מונה.
+                        </div>
+                    </div>
+
+                    <div class="error-type-card">
+                        <div class="error-type-icon disability">
+                            <i class="fas fa-wheelchair"></i>
+                        </div>
+                        <h4>אי-הפעלת הנחת נכות</h4>
+                        <p>נכות 70%+ זכאית ל-3.5 מ"ק נוספים בתעריף מופחת שלא תמיד מופעלים.</p>
+                        <div class="error-solution">
+                            <strong>פתרון:</strong> פנו לתאגיד עם אישור מביטוח לאומי להפעלת ההנחה.
+                        </div>
+                    </div>
+
+                    <div class="error-type-card">
+                        <div class="error-type-icon tariff">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <h4>טעות בחישוב תעריפים</h4>
+                        <p>שימוש בתעריפים שגויים או חישוב שגוי של מדרגות התעריף.</p>
+                        <div class="error-solution">
+                            <strong>פתרון:</strong> השתמשו במחשבון שלנו להשוואה ופנו לתאגיד במידת הצורך.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Main Calculator Card -->
         <div class="calculator-card">
             <h2><i class="fas fa-calculator"></i> חישוב חשבון מים</h2>
