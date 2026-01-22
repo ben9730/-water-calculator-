@@ -779,6 +779,23 @@ function createErrorCard(item, type) {
 }
 
 // ============================================
+// NAVIGATION FUNCTION
+// ============================================
+
+/**
+ * Smooth scroll to a specific section
+ */
+function scrollToSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+        section.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
+}
+
+// ============================================
 // MAKE FUNCTIONS GLOBALLY AVAILABLE
 // ============================================
 
@@ -789,3 +806,4 @@ window.exportToPDF = exportToPDF;
 window.resetCalculator = resetCalculator;
 window.toggleErrorChecker = toggleErrorChecker;
 window.checkForErrors = checkForErrors;
+window.scrollToSection = scrollToSection;
