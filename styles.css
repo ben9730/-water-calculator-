@@ -714,6 +714,405 @@ body {
     }
 }
 
+/* === Error Detection Card === */
+.error-detection-card {
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
+    box-shadow: 0 8px 30px var(--shadow);
+    margin-bottom: var(--spacing-lg);
+    animation: fadeIn 0.6s ease 0.3s both;
+}
+
+.error-detection-card h2 {
+    color: var(--danger-red);
+    font-size: 1.8rem;
+    margin-bottom: var(--spacing-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.section-description {
+    color: var(--text-light);
+    font-size: 1rem;
+    margin-bottom: var(--spacing-lg);
+}
+
+/* === Error Toggle Button === */
+.error-toggle-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #FFA500, #FF6347);
+    border: none;
+    color: var(--white);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-bottom: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    box-shadow: 0 4px 15px rgba(255, 165, 0, 0.3);
+}
+
+.error-toggle-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(255, 165, 0, 0.4);
+}
+
+.error-toggle-btn .toggle-icon {
+    transition: transform 0.3s ease;
+}
+
+/* === Error Checker Box === */
+.error-checker-box {
+    background: #FFF9F0;
+    border: 2px solid #FFE4CC;
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    animation: slideDown 0.4s ease;
+}
+
+.error-checker-box.hidden {
+    display: none;
+}
+
+.error-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+/* === Check Errors Button === */
+.check-errors-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #DC3545, #C82333);
+    color: var(--white);
+    border: none;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+}
+
+.check-errors-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 25px rgba(220, 53, 69, 0.4);
+}
+
+/* === Error Results === */
+.error-results {
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--danger-red);
+    animation: fadeInUp 0.6s ease;
+}
+
+.error-results.hidden {
+    display: none;
+}
+
+.error-results h3 {
+    color: var(--danger-red);
+    margin-bottom: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.errors-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+/* === Error Card === */
+.error-card {
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    border-right: 4px solid;
+    transition: var(--transition);
+}
+
+.error-card:hover {
+    transform: translateX(-5px);
+    box-shadow: 0 4px 15px var(--shadow);
+}
+
+.error-card.error {
+    background: #FFE5E5;
+    border-right-color: var(--danger-red);
+}
+
+.error-card.warning {
+    background: #FFF3CD;
+    border-right-color: var(--warning-orange);
+}
+
+.error-card.recommendation {
+    background: #E3F4FF;
+    border-right-color: var(--light-blue);
+}
+
+.error-card.severity-high {
+    border-right-width: 6px;
+}
+
+.error-card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+}
+
+.error-card-header i {
+    font-size: 1.5rem;
+}
+
+.error-card.error .error-card-header i {
+    color: var(--danger-red);
+}
+
+.error-card.warning .error-card-header i {
+    color: var(--warning-orange);
+}
+
+.error-card.recommendation .error-card-header i {
+    color: var(--light-blue);
+}
+
+.error-card-header h4 {
+    margin: 0;
+    color: var(--text-dark);
+    font-size: 1.1rem;
+}
+
+.error-card-body {
+    color: var(--text-dark);
+}
+
+.error-description {
+    margin-bottom: var(--spacing-md);
+    line-height: 1.6;
+}
+
+.error-action {
+    padding: var(--spacing-sm);
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: var(--radius-sm);
+}
+
+.error-action strong {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    color: var(--primary-blue);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.error-action p {
+    margin: 0;
+}
+
+/* === No Errors Found === */
+.no-errors-found {
+    text-align: center;
+    padding: var(--spacing-xl);
+    background: linear-gradient(135deg, #D4EDDA, #C3E6CB);
+    border-radius: var(--radius-md);
+}
+
+.no-errors-found i {
+    font-size: 4rem;
+    color: var(--success-green);
+    margin-bottom: var(--spacing-md);
+}
+
+.no-errors-found h4 {
+    color: var(--success-green);
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.no-errors-found p {
+    color: var(--text-dark);
+}
+
+/* === Error Summary === */
+.error-summary {
+    padding: var(--spacing-lg);
+    background: var(--water-tint);
+    border-radius: var(--radius-md);
+}
+
+.error-summary h4 {
+    color: var(--primary-blue);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.summary-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm);
+    background: var(--white);
+    border-radius: var(--radius-sm);
+}
+
+.summary-label {
+    font-weight: 600;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.summary-value {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+}
+
+.summary-value.negative {
+    color: var(--danger-red);
+}
+
+.summary-value.positive {
+    color: var(--success-green);
+}
+
+/* === Common Errors Info === */
+.common-errors-info {
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    background: linear-gradient(135deg, #FFF9F0, #FFFFFF);
+    border-radius: var(--radius-lg);
+    border: 2px solid #FFE4CC;
+}
+
+.common-errors-info h3 {
+    color: var(--warning-orange);
+    margin-bottom: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: 1.5rem;
+}
+
+.error-types-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.error-type-card {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    transition: var(--transition);
+    box-shadow: 0 2px 10px var(--shadow);
+}
+
+.error-type-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px var(--shadow-hover);
+}
+
+.error-type-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--spacing-md);
+    font-size: 1.8rem;
+    color: var(--white);
+}
+
+.error-type-icon.estimation {
+    background: linear-gradient(135deg, #FFA500, #FF6347);
+}
+
+.error-type-icon.persons {
+    background: linear-gradient(135deg, var(--light-blue), var(--primary-blue));
+}
+
+.error-type-icon.reading {
+    background: linear-gradient(135deg, #DC3545, #C82333);
+}
+
+.error-type-icon.spike {
+    background: linear-gradient(135deg, #FF6B6B, #FF4757);
+}
+
+.error-type-icon.disability {
+    background: linear-gradient(135deg, #A29BFE, #6C5CE7);
+}
+
+.error-type-icon.tariff {
+    background: linear-gradient(135deg, #00B894, #00CEC9);
+}
+
+.error-type-card h4 {
+    color: var(--text-dark);
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-sm);
+    text-align: center;
+}
+
+.error-type-card p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: var(--spacing-md);
+    text-align: center;
+}
+
+.error-solution {
+    padding: var(--spacing-sm);
+    background: var(--water-tint);
+    border-radius: var(--radius-sm);
+    border-right: 3px solid var(--primary-blue);
+}
+
+.error-solution strong {
+    display: block;
+    color: var(--primary-blue);
+    margin-bottom: var(--spacing-xs);
+    font-size: 0.95rem;
+}
+
+.error-solution {
+    color: var(--text-dark);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
 /* === Responsive Design === */
 @media (max-width: 768px) {
     .container {
@@ -752,6 +1151,18 @@ body {
 
     .total-value {
         font-size: 2.5rem;
+    }
+
+    .error-types-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .error-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .summary-grid {
+        grid-template-columns: 1fr;
     }
 }
 

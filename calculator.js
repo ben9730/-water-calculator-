@@ -515,6 +515,270 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ============================================
+// ERROR DETECTION FUNCTIONS
+// ============================================
+
+/**
+ * Toggle error checker box visibility
+ */
+function toggleErrorChecker() {
+    const errorCheckerBox = document.getElementById('errorCheckerBox');
+    const toggleIcon = document.querySelector('.error-toggle-btn .toggle-icon');
+
+    errorCheckerBox.classList.toggle('hidden');
+
+    // Rotate the chevron icon
+    if (errorCheckerBox.classList.contains('hidden')) {
+        toggleIcon.style.transform = 'rotate(0deg)';
+    } else {
+        toggleIcon.style.transform = 'rotate(180deg)';
+        // Smooth scroll to the error checker
+        setTimeout(() => {
+            errorCheckerBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+    }
+}
+
+/**
+ * Check for billing errors
+ */
+function checkForErrors(event) {
+    event.preventDefault();
+
+    // Get form values from main calculator
+    const consumption = parseFloat(document.getElementById('consumption').value);
+    const persons = parseInt(document.getElementById('persons').value);
+    const period = parseInt(document.getElementById('period').value);
+    const hasDisability = document.getElementById('disability').checked;
+
+    // Get form values from error checker
+    const actualBillAmount = parseFloat(document.getElementById('actualBillAmount').value);
+    const billingType = document.getElementById('billingType').value;
+    const previousConsumption = parseFloat(document.getElementById('previousConsumption').value);
+    const currentMeterReading = parseFloat(document.getElementById('currentMeterReading').value);
+
+    // Validate input
+    if (isNaN(consumption) || consumption < 0) {
+        alert('אנא הכנס כמות צריכה תקינה במחשבון הראשי');
+        return;
+    }
+
+    // Calculate expected bill
+    const calculatedResult = calculateWaterBill(consumption, persons, period, hasDisability, 2026);
+
+    // Detect errors
+    const errors = [];
+    const warnings = [];
+    const recommendations = [];
+
+    // 1. Check if billing is based on estimation
+    if (billingType === 'estimated') {
+        errors.push({
+            type: 'estimation',
+            severity: 'high',
+            title: 'חיוב על בסיס הערכה',
+            description: 'החשבון שלכם מבוסס על הערכה ולא על קריאה ממונה. זה עלול להוביל לחיוב לא מדויק.',
+            action: 'צלמו את המונה בבית ושלחו את התמונה לתאגיד המים עם בקשה לעדכון החשבון. אתם זכאים לזיכוי אם קריאת המונה בפועל נמוכה יותר.'
+        });
+    }
+
+    // 2. Compare actual bill to calculated bill
+    if (!isNaN(actualBillAmount) && actualBillAmount > 0) {
+        const difference = actualBillAmount - calculatedResult.totalPrice;
+        const percentDiff = Math.abs((difference / calculatedResult.totalPrice) * 100);
+
+        if (percentDiff > 5) {
+            if (difference > 0) {
+                errors.push({
+                    type: 'overcharge',
+                    severity: 'high',
+                    title: 'חיוב יתר אפשרי',
+                    description: `החשבון בפועל (${formatNumber(actualBillAmount)} ₪) גבוה מהחישוב שלנו (${formatNumber(calculatedResult.totalPrice)} ₪) בכ-${formatNumber(Math.abs(difference))} ₪ (${percentDiff.toFixed(1)}%).`,
+                    action: 'בדקו שמספר הנפשות בחשבון נכון. ודאו שקיבלתם את כל ההנחות המגיעות לכם. פנו לתאגיד לבירור.'
+                });
+            } else {
+                warnings.push({
+                    type: 'undercharge',
+                    severity: 'medium',
+                    title: 'חיוב חסר אפשרי',
+                    description: `החשבון בפועל (${formatNumber(actualBillAmount)} ₪) נמוך מהחישוב שלנו (${formatNumber(calculatedResult.totalPrice)} ₪) בכ-${formatNumber(Math.abs(difference))} ₪. ייתכן חיוב השלמה בעתיד.`,
+                    action: 'בדקו שנתוני הצריכה שהזנתם נכונים. חיוב חסר עלול להוביל לחיוב השלמה בחשבונות הבאים.'
+                });
+            }
+        }
+    }
+
+    // 3. Check for consumption spike
+    if (!isNaN(previousConsumption) && previousConsumption > 0) {
+        const consumptionChange = ((consumption - previousConsumption) / previousConsumption) * 100;
+
+        if (consumptionChange > 30) {
+            warnings.push({
+                type: 'spike',
+                severity: 'high',
+                title: 'עלייה חדה בצריכה',
+                description: `הצריכה עלתה ב-${consumptionChange.toFixed(1)}% לעומת החשבון הקודם (${formatNumber(previousConsumption)} → ${formatNumber(consumption)} מ"ק).`,
+                action: 'בדקו דליפות במערכת המים (ברזים, אסלה, מערכת השקיה). אם לא מצאתם דליפה, ייתכן שהמונה פגום - בקשו מהתאגיד לבדוק את המונה.'
+            });
+        } else if (consumptionChange < -30) {
+            warnings.push({
+                type: 'drop',
+                severity: 'medium',
+                title: 'ירידה חדה בצריכה',
+                description: `הצריכה ירדה ב-${Math.abs(consumptionChange).toFixed(1)}% לעומת החשבון הקודם (${formatNumber(previousConsumption)} → ${formatNumber(consumption)} מ"ק).`,
+                action: 'אם החשבון הקודם היה מבוסס על הערכה גבוהה, זו עשויה להיות תיקון. אחרת, ודאו שקריאת המונה נכונה.'
+            });
+        }
+    }
+
+    // 4. Check allocation efficiency
+    const allocationUsagePercent = (calculatedResult.reducedConsumption / calculatedResult.allocation) * 100;
+    if (allocationUsagePercent < 70 && persons === 2) {
+        recommendations.push({
+            type: 'persons',
+            severity: 'low',
+            title: 'ייתכן שמספר הנפשות שגוי',
+            description: `אתם משתמשים רק ב-${allocationUsagePercent.toFixed(0)}% מההקצאה המופחתת שלכם. ייתכן שהתאגיד מחשב לפי 2 נפשות כברירת מחדל.`,
+            action: 'אם יש בבית פחות מ-2 נפשות, שקלו לעדכן את התאגיד (אם כי זה עלול להקטין את ההקצאה). אם יש יותר - חובה לעדכן!'
+        });
+    }
+
+    // 5. Check disability benefit
+    if (!hasDisability && consumption > calculatedResult.allocation) {
+        recommendations.push({
+            type: 'disability',
+            severity: 'medium',
+            title: 'בדקו זכאות להנחת נכות',
+            description: 'אם יש בבית אדם עם נכות 70%+ מביטוח לאומי, אתם זכאים ל-3.5 מ"ק נוספים בתעריף מופחת.',
+            action: 'פנו לתאגיד המים עם אישור מביטוח לאומי להפעלת ההנחה. זה יכול לחסוך לכם כסף רב!'
+        });
+    }
+
+    // 6. Check meter reading validation
+    if (!isNaN(currentMeterReading) && currentMeterReading > 0) {
+        recommendations.push({
+            type: 'meter',
+            severity: 'low',
+            title: 'קריאת מונה ידנית',
+            description: `קריאת המונה הנוכחית: ${formatNumber(currentMeterReading)} מ"ק.`,
+            action: 'השוו את הקריאה הזו לקריאה שמופיעה בחשבון. אם יש פער - צלמו את המונה ופנו לתאגיד לתיקון.'
+        });
+    }
+
+    // Display results
+    displayErrorResults(errors, warnings, recommendations, calculatedResult, actualBillAmount);
+}
+
+/**
+ * Display error detection results
+ */
+function displayErrorResults(errors, warnings, recommendations, calculatedResult, actualBillAmount) {
+    const errorResults = document.getElementById('errorResults');
+    const errorsList = document.getElementById('errorsList');
+    const recommendedActions = document.getElementById('recommendedActions');
+
+    errorResults.classList.remove('hidden');
+
+    // Clear previous results
+    errorsList.innerHTML = '';
+    recommendedActions.innerHTML = '';
+
+    // Display errors
+    if (errors.length > 0) {
+        errors.forEach(error => {
+            const errorCard = createErrorCard(error, 'error');
+            errorsList.appendChild(errorCard);
+        });
+    }
+
+    // Display warnings
+    if (warnings.length > 0) {
+        warnings.forEach(warning => {
+            const warningCard = createErrorCard(warning, 'warning');
+            errorsList.appendChild(warningCard);
+        });
+    }
+
+    // Display recommendations
+    if (recommendations.length > 0) {
+        recommendations.forEach(recommendation => {
+            const recommendationCard = createErrorCard(recommendation, 'recommendation');
+            errorsList.appendChild(recommendationCard);
+        });
+    }
+
+    // If no issues found
+    if (errors.length === 0 && warnings.length === 0 && recommendations.length === 0) {
+        errorsList.innerHTML = `
+            <div class="no-errors-found">
+                <i class="fas fa-check-circle"></i>
+                <h4>לא נמצאו טעויות</h4>
+                <p>החשבון שלכם נראה תקין על פי הבדיקה שלנו.</p>
+            </div>
+        `;
+    }
+
+    // Summary
+    if (!isNaN(actualBillAmount) && actualBillAmount > 0) {
+        const summaryHTML = `
+            <div class="error-summary">
+                <h4><i class="fas fa-clipboard-list"></i> סיכום השוואה</h4>
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <span class="summary-label">חשבון בפועל:</span>
+                        <span class="summary-value">${formatNumber(actualBillAmount)} ₪</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">חישוב מצופה:</span>
+                        <span class="summary-value">${formatNumber(calculatedResult.totalPrice)} ₪</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">הפרש:</span>
+                        <span class="summary-value ${actualBillAmount > calculatedResult.totalPrice ? 'negative' : 'positive'}">
+                            ${formatNumber(Math.abs(actualBillAmount - calculatedResult.totalPrice))} ₪
+                        </span>
+                    </div>
+                </div>
+            </div>
+        `;
+        recommendedActions.innerHTML = summaryHTML;
+    }
+
+    // Scroll to results
+    setTimeout(() => {
+        errorResults.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 100);
+}
+
+/**
+ * Create error/warning/recommendation card
+ */
+function createErrorCard(item, type) {
+    const card = document.createElement('div');
+    card.className = `error-card ${type} severity-${item.severity}`;
+
+    let iconClass = 'fa-exclamation-triangle';
+    if (type === 'error') iconClass = 'fa-times-circle';
+    if (type === 'recommendation') iconClass = 'fa-lightbulb';
+
+    card.innerHTML = `
+        <div class="error-card-header">
+            <i class="fas ${iconClass}"></i>
+            <h4>${item.title}</h4>
+        </div>
+        <div class="error-card-body">
+            <p class="error-description">${item.description}</p>
+            <div class="error-action">
+                <strong><i class="fas fa-hand-point-left"></i> מה לעשות:</strong>
+                <p>${item.action}</p>
+            </div>
+        </div>
+    `;
+
+    return card;
+}
+
+// ============================================
 // MAKE FUNCTIONS GLOBALLY AVAILABLE
 // ============================================
 
@@ -523,3 +787,5 @@ window.toggleInstructions = toggleInstructions;
 window.calculateWater = calculateWater;
 window.exportToPDF = exportToPDF;
 window.resetCalculator = resetCalculator;
+window.toggleErrorChecker = toggleErrorChecker;
+window.checkForErrors = checkForErrors;
